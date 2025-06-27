@@ -12,7 +12,13 @@ def load_documents(folder_path):
             loader = TextLoader(file_path, encoding='utf-8')
         else:
             continue
-        docs.extend(loader.load())
+        loaded_docs = loader.load()
+        for doc in loaded_docs:
+            if doc.metadata.get("page") is not None:
+                doc.metadata["source"] = f"{filename} - Page {doc.metadata['page']}"
+            else:
+                doc.metadata["source"] = filename
+            docs.append(doc)
 
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
     return splitter.split_documents(docs)

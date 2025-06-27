@@ -22,7 +22,8 @@ def get_qa_chain():
 
     base_chain = ConversationalRetrievalChain.from_llm(
         llm=llm,
-        retriever=vectorstore.as_retriever()
+        retriever=vectorstore.as_retriever(),
+        return_source_documents=True
     )
 
     qa_chain = RunnableWithMessageHistory(
